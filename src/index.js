@@ -4,12 +4,13 @@ import './index.css';
 import App from './App';
 import Products from './Products';
 import ToDo from './TODOList';
+import Slider from './Slider';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
-    <ToDo />
+    <Slider />
   </React.StrictMode>
 );
 
