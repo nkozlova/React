@@ -19,27 +19,27 @@ function Inputs({ onAddToDoItem }) {
         <div className="inputs">
             <h1 className="title">To Do List</h1>
             <input
-                placeholder="Add your new TODO item..."
+                className="to-do-input"
+                placeholder="Add your new To Do item..."
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
                 onKeyDown={(e) => { if (e.key === "Enter") onAdd(); }} // по ентеру тоже добавляем новый элемент списка
             />
             <button
-                className="add-btn"
+                className="special-btn"
                 onClick={onAdd}>Add</button>
         </div>
     );
 }
 
-function ListItem({ todo, index, onToggleToDo, onDeleteToDo }) {
+function ListItem({ todo, index, onToggleToDo, onDeleteToDo, onToggleSelection }) {
     // Показываем крестик удаления элемента только при наведении на строку с ним
-    const boxRef = React.createRef() // Создаем ссылку на элемент (см на кнопку)
+    const delRef = React.createRef() // Создаем ссылку на элемент (см на кнопку)
     const handleMouseEnter = () => {
-        boxRef.current.style.display = "block"; // Показываем
+        delRef.current.style.display = "block"; // Показываем
     }
-
     const handleMouseLeave = () => {
-        boxRef.current.style.display = "none"; // Скрываем
+        delRef.current.style.display = "none"; // Скрываем
     }
 
     function hangleToggleToDo() {
@@ -55,23 +55,33 @@ function ListItem({ todo, index, onToggleToDo, onDeleteToDo }) {
         <li
             onClick={hangleToggleToDo}
             onMouseEnter={handleMouseEnter} // отслеживаем события мыши
-            onMouseLeave={handleMouseLeave} >
+            onMouseLeave={handleMouseLeave}
+        >
+            <input
+                type="checkbox"
+                className="checkbox"
+                onChange={() => onToggleSelection(index)}
+                onClick={(e) => e.stopPropagation()} // Остановить всплытие события -- реагируем на клик по кнопке, а не по строке
+                checked={todo.selected}
+            />
             <span
-                style={{ textDecoration: todo.finished ? "line-through" : "none" }} >
+                style={{ textDecoration: todo.finished ? "line-through" : "none" }}
+            >
                 {todo.name}
             </span>
             <button
-                ref={boxRef} // ссылка
+                ref={delRef} // ссылка
                 className="close"
                 onClick={handleDeleteToDo}
-                style={{ display: "none" }} >
+                style={{ display: "none" }}
+            >
                 <img src={closeIcon} className="close-icon" />
             </button>
         </li>
     );
 }
 
-function List({ todos, onToggleToDo, onDeleteToDo }) {
+function List({ todos, onToggleToDo, onDeleteToDo, onToggleSelection }) {
     const items = [];
 
     todos.map((todo, index) => {
@@ -81,6 +91,7 @@ function List({ todos, onToggleToDo, onDeleteToDo }) {
             index={index}
             onToggleToDo={onToggleToDo}
             onDeleteToDo={onDeleteToDo}
+            onToggleSelection={onToggleSelection}
         />);
     });
 
@@ -90,10 +101,11 @@ function List({ todos, onToggleToDo, onDeleteToDo }) {
 }
 
 export default function TODOList() {
-    const [todos, setTodos] = useState([{ name: "Item1", finished: false },
-        { name: "Clean", finished: true },
-        { name: "Write", finished: false },
-        { name: "Finish", finished: false },
+    // todo items
+    const [todos, setTodos] = useState([{ name: "Item1", finished: false, selected: false },
+        { name: "Clean", finished: true, selected: false },
+        { name: "Write", finished: false, selected: true },
+        { name: "Finish", finished: false, selected: false },
     ]);
 
     function handleAddToDoItem(name1) {
@@ -121,6 +133,53 @@ export default function TODOList() {
         setTodos(nextTodos);
     }
 
+    function handleToggleSelected(index) {
+        let nextTodos = todos.slice();
+        nextTodos[index].selected = !nextTodos[index].selected;
+        setTodos(nextTodos);
+    }
+
+    function handleFinishSelected() {
+        let nextTodos = todos.slice();
+        nextTodos.forEach(todo => {
+            if (todo.selected)
+                todo.finished = true;
+        });
+        setTodos(nextTodos);
+    }
+
+    function handleDeleteSelected() {
+        let nextTodos = todos.slice();
+        for (let i = nextTodos.length - 1; i >= 0; i--) {
+            if (nextTodos[i].selected)
+                nextTodos.splice(i, 1);
+        }
+        setTodos(nextTodos);
+    }
+
+    function enableFinishButton() {
+        return todos.find((todo) => todo.selected && !todo.finished);
+    }
+
+    function handleSelectAll() {
+        let nextTodos = todos.slice();
+        nextTodos.forEach((todo) => {
+            todo.selected = true;
+        });
+        setTodos(nextTodos);
+    }
+
+    function handleUnselectAll() {
+        let nextTodos = todos.slice();
+        nextTodos.forEach((todo) => {
+            todo.selected = false;
+        });
+        setTodos(nextTodos);
+    }
+
+    const hasSelection = todos.find((e) => e.selected);
+    const hasUnselection = todos.find((e) => !e.selected);
+
     return (
         <div className="whole-list">
             <Inputs
@@ -130,7 +189,42 @@ export default function TODOList() {
                 todos={todos}
                 onToggleToDo={(index) => handleToggleToDo(index)}
                 onDeleteToDo={(index) => handleDeleteToDo(index)}
+                onToggleSelection={(index) => handleToggleSelected(index)}
             />
+            <div className="selected-div">
+                <button
+                    className="special-btn"
+                    onClick={handleFinishSelected}
+                    disabled={!hasSelection || !enableFinishButton()}
+                >
+                    Set selected items finished
+                </button>
+                <button
+                    className="special-btn"
+                    onClick={handleDeleteSelected}
+                    disabled={!hasSelection}
+                >
+                    Delete selected items
+                </button>
+            </div>
+            <div className="selected-div">
+                {hasSelection
+                    ? <button
+                        className="special-btn"
+                        onClick={handleUnselectAll}
+                    >
+                        Clean selection
+                    </button>
+                    : <></>
+                }
+                <button
+                    className="special-btn"
+                    onClick={handleSelectAll}
+                    disabled={!hasUnselection}
+                >
+                    Select all items
+                </button>
+            </div>
         </div>
     );
 }
