@@ -1,0 +1,10 @@
+.square {
+    color: chocolate;
+    background-color: beige;
+    border: none;
+    height: 50px;
+    width: 50px;
+    margin: 5px;
+    font-size: 16px;
+    border-radius: 7px;
+}
