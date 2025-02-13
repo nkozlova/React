@@ -1,0 +1,82 @@
+nav {
+    height: 40px;
+    background-color: black;
+    place-content: center;
+}
+
+.menu {
+    color: white;
+    padding: 0 10px 0 10px;
+    text-decoration: none;
+}
+
+.menu.active {
+    font-weight: bold;
+}
+
+.card {
+    display: flex;
+}
+
+.card-title {
+    white-space: nowrap; /*Запрещаем перенос*/
+    overflow: hidden; /* Скрываем текст, выходящий за пределы */
+    text-overflow: ellipsis; /* Добавляем троеточие */
+}
+
+.card-text {
+    display: -webkit-box; /* Используется для работы с line-clamp */
+    -webkit-line-clamp: 3; /* Обрезаем текст после 3 строк */
+    -webkit-box-orient: vertical; /* Устанавливаем вертикальное направление */
+    overflow: hidden; /* Скрываем текст, выходящий за пределы */
+    text-overflow: ellipsis; /* Добавляем троеточие */
+}
+
+.board {
+    display: flex; /* Включаем flex-контейнер */
+    flex-wrap: wrap; /* Разрешаем перенос элементов на новую строку */
+    gap: 16px; /* Расстояние между карточками */
+    justify-content: center;
+    margin: 10px 0px 10px 0px;
+}
+
+.content {
+    padding: 20px 100px 20px 100px;
+    position: relative;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); /* Dark semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 10px;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-header{
+    float: left;
+    position: relative;
+}
+
+.btn {
+    margin: 2px 2px 2px 2px;
+}
+
+.close {
+    position: absolute;
+    right: 0;
+    top: 0;
+}

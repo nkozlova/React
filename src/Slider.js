@@ -78,8 +78,8 @@ function Slider({ slides, loop, navs, pags, auto, stopMouseHover, delay }) {
                 {slides[slideIndex].text}
             </div>
 
-            {navs
-                ? <div>
+            {navs && (
+                <div>
                     <button
                         className="prev-next"
                         onClick={handlePrevBtn}
@@ -96,17 +96,15 @@ function Slider({ slides, loop, navs, pags, auto, stopMouseHover, delay }) {
                         {'>'}
                     </button>
                 </div>
-                : <></>
-            }
+            )}
 
-            {pags
-                ? <Pagination
+            {pags && (
+                <Pagination
                     activeSlide={slideIndex}
                     count={slides.length}
                     onSlide={(i) => setSlideIndex(i)}
                 />
-                : <></>
-            }
+             )}
         </div>
     );
 }

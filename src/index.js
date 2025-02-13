@@ -5,13 +5,15 @@ import App from './App';
 import Products from './Products';
 import ToDo from './TODOList';
 import Slider from './Slider';
+import Props from './PropsComponents';
+import RRS from './React-Redux-Server';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
-    <Slider />
-  </React.StrictMode>
+        <RRS />
+    </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
