@@ -7,12 +7,13 @@ import ToDo from './TODOList';
 import Slider from './Slider';
 import Props from './PropsComponents';
 import RRS from './React-Redux-Server';
+import Table from './Table/Table';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
-        <RRS />
+        <Table />
     </React.StrictMode>
 );
 

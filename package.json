@@ -13,6 +13,7 @@
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.1.5",
     "react-scripts": "^5.0.1",
+    "react-table": "^7.8.0",
     "redux": "^5.0.1",
     "web-vitals": "^4.2.4"
   },
